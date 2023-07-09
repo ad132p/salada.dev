@@ -362,7 +362,7 @@ function Navbar() {
 var import_react4 = require("@remix-run/react");
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-V26BZWSD.css";
+var tailwind_default = "/build/_assets/tailwind-EKDKYVZ5.css";
 
 // app/root.jsx
 var import_jsx_dev_runtime3 = require("react/jsx-dev-runtime"), links = () => [
@@ -503,11 +503,15 @@ async function verifyLogin(email, password) {
 }
 
 // app/server/auth.server.ts
-var authenticator = new import_remix_auth.Authenticator(sessionStorage, { sessionKey: "_session" }), getCallback = (provider) => `http://localhost:3000/auth/${provider}/callback`;
+var import_tiny_invariant = __toESM(require("tiny-invariant")), authenticator = new import_remix_auth.Authenticator(sessionStorage, { sessionKey: "sessionKey", sessionErrorKey: "sessionErrorKey" }), getCallback = (provider) => `http://localhost:3000/auth/${provider}/callback`;
 authenticator.use(
   new import_remix_auth_form.FormStrategy(async ({ form }) => {
     let email = form.get("email"), password = form.get("password");
-    return await verifyLogin(email, password);
+    (0, import_tiny_invariant.default)(typeof email == "string", "username must be a string"), (0, import_tiny_invariant.default)(email.length > 0, "email must not be empty"), (0, import_tiny_invariant.default)(typeof password == "string", "password must be a string"), (0, import_tiny_invariant.default)(password.length > 0, "password must not be empty");
+    let user = await verifyLogin(email, password);
+    if (!user)
+      throw console.log("aqui"), new import_remix_auth.AuthorizationError("User does not exist");
+    return user;
   }),
   // each strategy has a name and can be changed to use another one
   // same strategy multiple times, especially useful for the OAuth2 strategy.
@@ -555,7 +559,7 @@ __export(posts_admin_new_exports, {
   action: () => action,
   default: () => NewPost
 });
-var import_react6 = require("@remix-run/react"), import_node3 = require("@remix-run/node"), import_tiny_invariant = __toESM(require("tiny-invariant"));
+var import_react6 = require("@remix-run/react"), import_node3 = require("@remix-run/node"), import_tiny_invariant2 = __toESM(require("tiny-invariant"));
 
 // app/models/post.server.ts
 async function getPosts() {
@@ -577,13 +581,13 @@ var import_jsx_dev_runtime5 = require("react/jsx-dev-runtime"), action = async (
   };
   return Object.values(errors).some(
     (errorMessage) => errorMessage
-  ) ? (0, import_node3.json)(errors) : ((0, import_tiny_invariant.default)(
+  ) ? (0, import_node3.json)(errors) : ((0, import_tiny_invariant2.default)(
     typeof title == "string",
     "title must be a string"
-  ), (0, import_tiny_invariant.default)(
+  ), (0, import_tiny_invariant2.default)(
     typeof slug == "string",
     "slug must be a string"
-  ), (0, import_tiny_invariant.default)(
+  ), (0, import_tiny_invariant2.default)(
     typeof markdown == "string",
     "markdown must be a string"
   ), await createPost({ title, slug, markdown }), (0, import_node3.redirect)("/posts/admin"));
@@ -742,7 +746,7 @@ __export(notes_noteId_exports, {
   default: () => NoteDetailsPage,
   loader: () => loader3
 });
-var import_node6 = require("@remix-run/node"), import_react7 = require("@remix-run/react"), import_tiny_invariant3 = __toESM(require("tiny-invariant"));
+var import_node6 = require("@remix-run/node"), import_react7 = require("@remix-run/react"), import_tiny_invariant4 = __toESM(require("tiny-invariant"));
 
 // app/models/note.server.js
 function getNote({ id, userId }) {
@@ -778,11 +782,11 @@ function deleteNote({ id, userId }) {
 }
 
 // app/session.server.js
-var import_node5 = require("@remix-run/node"), import_tiny_invariant2 = __toESM(require("tiny-invariant"));
-(0, import_tiny_invariant2.default)(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
+var import_node5 = require("@remix-run/node"), import_tiny_invariant3 = __toESM(require("tiny-invariant"));
+(0, import_tiny_invariant3.default)(process.env.SESSION_SECRET, "SESSION_SECRET must be set");
 var sessionStorage2 = (0, import_node5.createCookieSessionStorage)({
   cookie: {
-    name: "__session",
+    name: "_session",
     httpOnly: !0,
     path: "/",
     sameSite: "lax",
@@ -824,14 +828,14 @@ async function createUserSession({
 // app/routes/notes.$noteId.jsx
 var import_jsx_dev_runtime6 = require("react/jsx-dev-runtime"), loader3 = async ({ params, request }) => {
   let userId = await requireUserId(request);
-  (0, import_tiny_invariant3.default)(params.noteId, "noteId not found");
+  (0, import_tiny_invariant4.default)(params.noteId, "noteId not found");
   let note = await getNote({ id: params.noteId, userId });
   if (!note)
     throw new Response("Not Found", { status: 404 });
   return (0, import_node6.json)({ note });
 }, action3 = async ({ params, request }) => {
   let userId = await requireUserId(request);
-  return (0, import_tiny_invariant3.default)(params.noteId, "noteId not found"), await deleteNote({ id: params.noteId, userId }), (0, import_node6.redirect)("/notes");
+  return (0, import_tiny_invariant4.default)(params.noteId, "noteId not found"), await deleteNote({ id: params.noteId, userId }), (0, import_node6.redirect)("/notes");
 };
 function NoteDetailsPage() {
   let data = (0, import_react7.useLoaderData)();
@@ -2565,11 +2569,11 @@ var options = marked.options, setOptions = marked.setOptions, use = marked.use, 
 var parser = Parser.parse, lexer = Lexer.lex;
 
 // app/routes/posts.$slug.tsx
-var import_tiny_invariant4 = __toESM(require("tiny-invariant"));
+var import_tiny_invariant5 = __toESM(require("tiny-invariant"));
 var import_jsx_dev_runtime9 = require("react/jsx-dev-runtime"), loader6 = async ({ params }) => {
-  (0, import_tiny_invariant4.default)(params.slug, "params.slug is required");
+  (0, import_tiny_invariant5.default)(params.slug, "params.slug is required");
   let post = await getPost(params.slug);
-  (0, import_tiny_invariant4.default)(post, `Post not found: ${params.slug}`);
+  (0, import_tiny_invariant5.default)(post, `Post not found: ${params.slug}`);
   let html = marked(post.markdown);
   return (0, import_node8.json)({ html, post });
 };
@@ -2949,224 +2953,331 @@ var import_remix_auth_socials2 = require("remix-auth-socials"), import_jsx_dev_r
   lineNumber: 16,
   columnNumber: 3
 }, this);
-async function action6({ request }) {
-  return await authenticator.authenticate("form", request, {
+async function action6({ request, context }) {
+  let resp = await authenticator.authenticate("form", request, {
     successRedirect: "/",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
+    throwOnError: !0,
+    context
   });
+  return console.log(resp, "resp"), resp;
 }
 var loader9 = async ({ request }) => {
   await authenticator.isAuthenticated(request, { successRedirect: "/" });
-  let session = await sessionStorage2.getSession(
-    request.headers.get("cookie")
-  );
-  console.log(session);
-  let error = session.get(authenticator.sessionErrorKey);
+  let error = (await sessionStorage2.getSession(
+    request.headers.get("Cookie")
+  )).get("sessionErrorKey");
   return (0, import_node11.json)({ error });
 }, meta2 = () => [{ title: "Login" }];
 function LoginPage() {
   var _a, _b, _c, _d;
-  let [searchParams] = (0, import_react15.useSearchParams)(), redirectTo = searchParams.get("redirectTo") || "/notes", actionData = (0, import_react15.useActionData)(), emailRef = (0, import_react16.useRef)(null), passwordRef = (0, import_react16.useRef)(null);
-  return (0, import_react16.useEffect)(() => {
-    var _a2, _b2, _c2, _d2;
-    (_a2 = actionData == null ? void 0 : actionData.errors) != null && _a2.email ? (_b2 = emailRef.current) == null || _b2.focus() : (_c2 = actionData == null ? void 0 : actionData.errors) != null && _c2.password && ((_d2 = passwordRef.current) == null || _d2.focus());
-  }, [actionData]), /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_react15.Form, { method: "post", className: "space-y-6", children: [
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-        "label",
-        {
-          htmlFor: "email",
-          className: "block text-sm font-medium text-gray-100",
-          children: "Email address"
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/login.tsx",
-          lineNumber: 70,
-          columnNumber: 13
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mt-1", children: [
+  let [searchParams] = (0, import_react15.useSearchParams)(), redirectTo = searchParams.get("redirectTo") || "/notes", actionData = (0, import_react15.useActionData)(), emailRef = (0, import_react16.useRef)(null), passwordRef = (0, import_react16.useRef)(null), loaderData = (0, import_react15.useLoaderData)();
+  console.log(JSON.stringify(loaderData));
+  let [isPasswordVisible, setIsPasswordVisible] = (0, import_react16.useState)(!1);
+  function togglePasswordVisibility() {
+    setIsPasswordVisible((prevState) => !prevState);
+  }
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex min-h-full flex-col justify-center", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mx-auto w-full max-w-md px-8", children: [
+    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(import_react15.Form, { method: "post", className: "space-y-6", children: [
+      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-          "input",
+          "label",
           {
-            ref: emailRef,
-            id: "email",
-            required: !0,
-            autoFocus: !0,
-            name: "email",
-            type: "email",
-            autoComplete: "email",
-            "aria-invalid": (_a = actionData == null ? void 0 : actionData.errors) != null && _a.email ? !0 : void 0,
-            "aria-describedby": "email-error",
-            className: "w-full rounded border border-gray-500 px-2 py-1 text-lg"
+            htmlFor: "email",
+            className: "block text-sm font-medium text-gray-100",
+            children: "Email address"
           },
           void 0,
           !1,
           {
             fileName: "app/routes/login.tsx",
-            lineNumber: 77,
-            columnNumber: 15
+            lineNumber: 79,
+            columnNumber: 13
           },
           this
         ),
-        (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
-          fileName: "app/routes/login.tsx",
-          lineNumber: 91,
-          columnNumber: 17
-        }, this) : null
-      ] }, void 0, !0, {
-        fileName: "app/routes/login.tsx",
-        lineNumber: 76,
-        columnNumber: 13
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/login.tsx",
-      lineNumber: 69,
-      columnNumber: 11
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-        "label",
-        {
-          htmlFor: "password",
-          className: "block text-sm font-medium text-gray-100",
-          children: "Password"
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/login.tsx",
-          lineNumber: 99,
-          columnNumber: 13
-        },
-        this
-      ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mt-1", children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-          "input",
-          {
-            id: "password",
-            ref: passwordRef,
-            name: "password",
-            type: "password",
-            autoComplete: "current-password",
-            "aria-invalid": (_c = actionData == null ? void 0 : actionData.errors) != null && _c.password ? !0 : void 0,
-            "aria-describedby": "password-error",
-            className: "w-full rounded border border-gray-500 px-2 py-1 text-lg"
-          },
-          void 0,
-          !1,
-          {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "mt-1", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            "input",
+            {
+              ref: emailRef,
+              id: "email",
+              required: !0,
+              autoFocus: !0,
+              name: "email",
+              type: "email",
+              autoComplete: "email",
+              "aria-invalid": (_a = actionData == null ? void 0 : actionData.errors) != null && _a.email ? !0 : void 0,
+              "aria-describedby": "email-error",
+              className: "w-full rounded border border-gray-500 px-2 py-1 text-lg"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/login.tsx",
+              lineNumber: 86,
+              columnNumber: 15
+            },
+            this
+          ),
+          (_b = actionData == null ? void 0 : actionData.errors) != null && _b.email ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "pt-1 text-red-700", id: "email-error", children: actionData.errors.email }, void 0, !1, {
             fileName: "app/routes/login.tsx",
-            lineNumber: 106,
-            columnNumber: 15
-          },
-          this
-        ),
-        (_d = actionData == null ? void 0 : actionData.errors) != null && _d.password ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: actionData.errors.password }, void 0, !1, {
+            lineNumber: 100,
+            columnNumber: 17
+          }, this) : null
+        ] }, void 0, !0, {
           fileName: "app/routes/login.tsx",
-          lineNumber: 118,
-          columnNumber: 17
-        }, this) : null
+          lineNumber: 85,
+          columnNumber: 13
+        }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/login.tsx",
-        lineNumber: 105,
-        columnNumber: 13
-      }, this)
-    ] }, void 0, !0, {
-      fileName: "app/routes/login.tsx",
-      lineNumber: 98,
-      columnNumber: 11
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
-      fileName: "app/routes/login.tsx",
-      lineNumber: 125,
-      columnNumber: 11
-    }, this),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-      "button",
-      {
-        className: "w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400",
-        children: "Log in"
-      },
-      void 0,
-      !1,
-      {
-        fileName: "app/routes/login.tsx",
-        lineNumber: 126,
+        lineNumber: 78,
         columnNumber: 11
-      },
-      this
-    ),
-    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex items-center justify-between", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex items-center", children: [
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+          "label",
+          {
+            htmlFor: "password",
+            className: "block text-sm font-medium text-gray-100",
+            children: "Password"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/login.tsx",
+            lineNumber: 108,
+            columnNumber: 13
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "relative container mx-auto mt-1", children: [
+          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            "input",
+            {
+              id: "password",
+              ref: passwordRef,
+              name: "password",
+              type: isPasswordVisible ? "text" : "password",
+              autoComplete: "current-password",
+              "aria-invalid": (_c = actionData == null ? void 0 : actionData.errors) != null && _c.password ? !0 : void 0,
+              "aria-describedby": "password-error",
+              className: "w-full rounded border border-gray-500 px-2 py-1 text-lg"
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/login.tsx",
+              lineNumber: 115,
+              columnNumber: 15
+            },
+            this
+          ),
+          /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+            "span",
+            {
+              className: "absolute inset-y-0 right-0 flex items-center px-4 text-gray-600",
+              onClick: togglePasswordVisibility,
+              children: isPasswordVisible ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                "svg",
+                {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  fill: "none",
+                  viewBox: "0 0 24 24",
+                  strokeWidth: 1.5,
+                  stroke: "currentColor",
+                  className: "w-5 h-5",
+                  children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                    "path",
+                    {
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      d: "M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                    },
+                    void 0,
+                    !1,
+                    {
+                      fileName: "app/routes/login.tsx",
+                      lineNumber: 138,
+                      columnNumber: 21
+                    },
+                    this
+                  )
+                },
+                void 0,
+                !1,
+                {
+                  fileName: "app/routes/login.tsx",
+                  lineNumber: 130,
+                  columnNumber: 19
+                },
+                this
+              ) : /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                "svg",
+                {
+                  xmlns: "http://www.w3.org/2000/svg",
+                  fill: "none",
+                  viewBox: "0 0 24 24",
+                  strokeWidth: 1.5,
+                  stroke: "currentColor",
+                  className: "w-5 h-5",
+                  children: [
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                      "path",
+                      {
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        d: "M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/login.tsx",
+                        lineNumber: 153,
+                        columnNumber: 21
+                      },
+                      this
+                    ),
+                    /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+                      "path",
+                      {
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round",
+                        d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      },
+                      void 0,
+                      !1,
+                      {
+                        fileName: "app/routes/login.tsx",
+                        lineNumber: 158,
+                        columnNumber: 21
+                      },
+                      this
+                    )
+                  ]
+                },
+                void 0,
+                !0,
+                {
+                  fileName: "app/routes/login.tsx",
+                  lineNumber: 145,
+                  columnNumber: 19
+                },
+                this
+              )
+            },
+            void 0,
+            !1,
+            {
+              fileName: "app/routes/login.tsx",
+              lineNumber: 125,
+              columnNumber: 15
+            },
+            this
+          )
+        ] }, void 0, !0, {
+          fileName: "app/routes/login.tsx",
+          lineNumber: 114,
+          columnNumber: 13
+        }, this),
+        (_d = loaderData == null ? void 0 : loaderData.error) != null && _d.message ? /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "pt-1 text-red-700", id: "password-error", children: loaderData.error.message }, void 0, !1, {
+          fileName: "app/routes/login.tsx",
+          lineNumber: 168,
+          columnNumber: 17
+        }, this) : null
+      ] }, void 0, !0, {
+        fileName: "app/routes/login.tsx",
+        lineNumber: 107,
+        columnNumber: 11
+      }, this),
+      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("input", { type: "hidden", name: "redirectTo", value: redirectTo }, void 0, !1, {
+        fileName: "app/routes/login.tsx",
+        lineNumber: 174,
+        columnNumber: 11
+      }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-        "input",
+        "button",
         {
-          id: "remember",
-          name: "remember",
-          type: "checkbox",
-          className: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          className: "w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:bg-blue-400",
+          children: "Log in"
         },
         void 0,
         !1,
         {
           fileName: "app/routes/login.tsx",
-          lineNumber: 134,
-          columnNumber: 15
+          lineNumber: 175,
+          columnNumber: 11
         },
         this
       ),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
-        "label",
-        {
-          htmlFor: "remember",
-          className: "ml-2 block text-sm text-gray-50",
-          children: "Remember me"
-        },
-        void 0,
-        !1,
-        {
-          fileName: "app/routes/login.tsx",
-          lineNumber: 141,
-          columnNumber: 15
-        },
-        this
-      )
+      /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex items-center justify-between", children: /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex items-center", children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+          "input",
+          {
+            id: "remember",
+            name: "remember",
+            type: "checkbox",
+            className: "h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/login.tsx",
+            lineNumber: 183,
+            columnNumber: 15
+          },
+          this
+        ),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(
+          "label",
+          {
+            htmlFor: "remember",
+            className: "ml-2 block text-sm text-gray-50",
+            children: "Remember me"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/login.tsx",
+            lineNumber: 190,
+            columnNumber: 15
+          },
+          this
+        )
+      ] }, void 0, !0, {
+        fileName: "app/routes/login.tsx",
+        lineNumber: 182,
+        columnNumber: 13
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/login.tsx",
+        lineNumber: 181,
+        columnNumber: 11
+      }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/login.tsx",
-      lineNumber: 133,
-      columnNumber: 13
-    }, this) }, void 0, !1, {
-      fileName: "app/routes/login.tsx",
-      lineNumber: 132,
-      columnNumber: 11
+      lineNumber: 77,
+      columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)("div", { className: "flex items-center justify-between", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime13.jsxDEV)(SocialButton, { provider: import_remix_auth_socials2.SocialsProvider.GOOGLE, label: "Login with Google" }, void 0, !1, {
         fileName: "app/routes/login.tsx",
-        lineNumber: 150,
-        columnNumber: 62
+        lineNumber: 199,
+        columnNumber: 60
       }, this),
       " "
     ] }, void 0, !0, {
       fileName: "app/routes/login.tsx",
-      lineNumber: 150,
-      columnNumber: 11
+      lineNumber: 199,
+      columnNumber: 9
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/login.tsx",
-    lineNumber: 68,
-    columnNumber: 9
-  }, this) }, void 0, !1, {
-    fileName: "app/routes/login.tsx",
-    lineNumber: 67,
+    lineNumber: 76,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/login.tsx",
-    lineNumber: 66,
+    lineNumber: 75,
     columnNumber: 5
   }, this);
 }
@@ -3557,7 +3668,7 @@ function Join() {
 }
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/build/entry.client-IPDXXO3Y.js", imports: ["/build/_shared/chunk-KEZDWIBR.js", "/build/_shared/chunk-73CLBT4D.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-O6WHKCUR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FREMC74P.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.$provider": { id: "routes/auth.$provider", parentId: "root", path: "auth/:provider", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.$provider-IXAVOMVE.js", imports: void 0, hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.$provider.callback": { id: "routes/auth.$provider.callback", parentId: "routes/auth.$provider", path: "callback", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.$provider.callback-FRGKCSKF.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/healthcheck": { id: "routes/healthcheck", parentId: "root", path: "healthcheck", index: void 0, caseSensitive: void 0, module: "/build/routes/healthcheck-RMG3PGFG.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/join": { id: "routes/join", parentId: "root", path: "join", index: void 0, caseSensitive: void 0, module: "/build/routes/join-4XMLIGX7.js", imports: ["/build/_shared/chunk-6P5XYK4X.js", "/build/_shared/chunk-TA6WSWS5.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/login": { id: "routes/login", parentId: "root", path: "login", index: void 0, caseSensitive: void 0, module: "/build/routes/login-D236HH7M.js", imports: ["/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/logout": { id: "routes/logout", parentId: "root", path: "logout", index: void 0, caseSensitive: void 0, module: "/build/routes/logout-E7YBVPSA.js", imports: void 0, hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes": { id: "routes/notes", parentId: "root", path: "notes", index: void 0, caseSensitive: void 0, module: "/build/routes/notes-YP6SDYOR.js", imports: ["/build/_shared/chunk-6P5XYK4X.js", "/build/_shared/chunk-NWO4XCJO.js", "/build/_shared/chunk-TA6WSWS5.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.$noteId": { id: "routes/notes.$noteId", parentId: "routes/notes", path: ":noteId", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.$noteId-HMTWNSTP.js", imports: ["/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/notes._index": { id: "routes/notes._index", parentId: "routes/notes", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/notes._index-FWNVGDVV.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.new": { id: "routes/notes.new", parentId: "routes/notes", path: "new", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.new-2TZ5GZ5I.js", imports: void 0, hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.$slug": { id: "routes/posts.$slug", parentId: "root", path: "posts/:slug", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$slug-E7I2TCXZ.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts._index": { id: "routes/posts._index", parentId: "root", path: "posts", index: !0, caseSensitive: void 0, module: "/build/routes/posts._index-SECDN5BI.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin": { id: "routes/posts.admin", parentId: "root", path: "posts/admin", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.admin-IO4PD5K2.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin._index": { id: "routes/posts.admin._index", parentId: "routes/posts.admin", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/posts.admin._index-3VKP6VA3.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin.new": { id: "routes/posts.admin.new", parentId: "routes/posts.admin", path: "new", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.admin.new-4RMNJOPN.js", imports: ["/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, version: "d1ffffdd", hmr: void 0, url: "/build/manifest-D1FFFFDD.js" };
+var assets_manifest_default = { entry: { module: "/build/entry.client-IPDXXO3Y.js", imports: ["/build/_shared/chunk-KEZDWIBR.js", "/build/_shared/chunk-73CLBT4D.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/build/root-UBRZP2OL.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/_index-FREMC74P.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.$provider": { id: "routes/auth.$provider", parentId: "root", path: "auth/:provider", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.$provider-IXAVOMVE.js", imports: void 0, hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/auth.$provider.callback": { id: "routes/auth.$provider.callback", parentId: "routes/auth.$provider", path: "callback", index: void 0, caseSensitive: void 0, module: "/build/routes/auth.$provider.callback-FRGKCSKF.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/healthcheck": { id: "routes/healthcheck", parentId: "root", path: "healthcheck", index: void 0, caseSensitive: void 0, module: "/build/routes/healthcheck-RMG3PGFG.js", imports: void 0, hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/join": { id: "routes/join", parentId: "root", path: "join", index: void 0, caseSensitive: void 0, module: "/build/routes/join-4XMLIGX7.js", imports: ["/build/_shared/chunk-6P5XYK4X.js", "/build/_shared/chunk-TA6WSWS5.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/login": { id: "routes/login", parentId: "root", path: "login", index: void 0, caseSensitive: void 0, module: "/build/routes/login-DUASO7EW.js", imports: ["/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/logout": { id: "routes/logout", parentId: "root", path: "logout", index: void 0, caseSensitive: void 0, module: "/build/routes/logout-E7YBVPSA.js", imports: void 0, hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes": { id: "routes/notes", parentId: "root", path: "notes", index: void 0, caseSensitive: void 0, module: "/build/routes/notes-YP6SDYOR.js", imports: ["/build/_shared/chunk-6P5XYK4X.js", "/build/_shared/chunk-NWO4XCJO.js", "/build/_shared/chunk-TA6WSWS5.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.$noteId": { id: "routes/notes.$noteId", parentId: "routes/notes", path: ":noteId", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.$noteId-HMTWNSTP.js", imports: ["/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !0 }, "routes/notes._index": { id: "routes/notes._index", parentId: "routes/notes", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/notes._index-FWNVGDVV.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/notes.new": { id: "routes/notes.new", parentId: "routes/notes", path: "new", index: void 0, caseSensitive: void 0, module: "/build/routes/notes.new-2TZ5GZ5I.js", imports: void 0, hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.$slug": { id: "routes/posts.$slug", parentId: "root", path: "posts/:slug", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.$slug-E7I2TCXZ.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-AUYLHJJM.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts._index": { id: "routes/posts._index", parentId: "root", path: "posts", index: !0, caseSensitive: void 0, module: "/build/routes/posts._index-SECDN5BI.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin": { id: "routes/posts.admin", parentId: "root", path: "posts/admin", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.admin-IO4PD5K2.js", imports: ["/build/_shared/chunk-SG4GLWT6.js", "/build/_shared/chunk-ZP6BZTHN.js"], hasAction: !1, hasLoader: !0, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin._index": { id: "routes/posts.admin._index", parentId: "routes/posts.admin", path: void 0, index: !0, caseSensitive: void 0, module: "/build/routes/posts.admin._index-3VKP6VA3.js", imports: void 0, hasAction: !1, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 }, "routes/posts.admin.new": { id: "routes/posts.admin.new", parentId: "routes/posts.admin", path: "new", index: void 0, caseSensitive: void 0, module: "/build/routes/posts.admin.new-4RMNJOPN.js", imports: ["/build/_shared/chunk-AUYLHJJM.js"], hasAction: !0, hasLoader: !1, hasCatchBoundary: !1, hasErrorBoundary: !1 } }, version: "7bd9c098", hmr: void 0, url: "/build/manifest-7BD9C098.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var assetsBuildDirectory = "public/build", future = { v2_dev: !1, unstable_postcss: !1, unstable_tailwind: !1, v2_errorBoundary: !0, v2_headers: !0, v2_meta: !0, v2_normalizeFormMethod: !0, v2_routeConvention: !0 }, publicPath = "/build/", entry = { module: entry_server_exports }, routes = {

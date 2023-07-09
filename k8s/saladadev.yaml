@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: saladadev-app
+spec:
+  containers:
+    - image: local-registry:5000/salada.dev:latest
+      name: saladadev-app
+      ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+      envFrom:
+      - configMapRef: 
+          name: salada-secrets
