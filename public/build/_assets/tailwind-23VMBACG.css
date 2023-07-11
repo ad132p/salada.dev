@@ -398,6 +398,9 @@ video {
 .mt-16 {
   margin-top: 4rem;
 }
+.mb-1 {
+  margin-bottom: .25rem;
+}
 .block {
   display: block;
 }
@@ -628,6 +631,10 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+.px-1 {
+  padding-left: .25rem;
+  padding-right: .25rem;
 }
 .pb-8 {
   padding-bottom: 2rem;
@@ -991,4 +998,4 @@ video {
     line-height: 1;
   }
 }
-/*# sourceMappingURL=/build/_assets/tailwind-ZL6ETU3R.css.map */
+/*# sourceMappingURL=/build/_assets/tailwind-BV3SHNYD.css.map */

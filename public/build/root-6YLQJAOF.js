@@ -29,7 +29,7 @@ var import_jsx_dev_runtime = __toESM(require_jsx_dev_runtime());
 function Navbar() {
   const user = useRouteLoaderData("routes/_index");
   const [navbarOpen, setNavbarOpen] = import_react.default.useState(false);
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(import_jsx_dev_runtime.Fragment, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("nav", { className: "relative flex flex-wrap items-center justify-between px-2 py-3 bg-emerald-500 mb-3", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "container px-4 mx-auto flex flex-wrap items-center justify-between", children: [
+  return /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(import_jsx_dev_runtime.Fragment, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("nav", { className: "relative flex flex-wrap items-center justify-between px-1 py-1 bg-emerald-500 mb-1", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "container px-1 mx-auto flex flex-wrap items-center justify-between", children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("div", { className: "w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-between", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("a", { href: "/", children: /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)("img", { className: "mr-4 py-2", src: home_default, width: "50", height: "50", alt: "casinha" }, void 0, false, {
       fileName: "app/Navbar.jsx",
       lineNumber: 14,
@@ -213,7 +213,7 @@ function Navbar() {
 }
 
 // app/tailwind.css
-var tailwind_default = "/build/_assets/tailwind-EKDKYVZ5.css";
+var tailwind_default = "/build/_assets/tailwind-23VMBACG.css";
 
 // app/root.jsx
 var import_jsx_dev_runtime2 = __toESM(require_jsx_dev_runtime());
@@ -304,4 +304,4 @@ export {
    * @license MIT
    *)
 */
-//# sourceMappingURL=/build/root-UBRZP2OL.js.map
+//# sourceMappingURL=/build/root-6YLQJAOF.js.map
