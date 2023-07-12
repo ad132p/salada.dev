@@ -13,8 +13,7 @@ export let authenticator = new Authenticator<User | Error | null>(sessionStorage
 
 const getCallback = (provider: SocialsProvider) => {
     const host = process.env.DEPLOY_HOSTNAME
-    console.log(host, 'host')
-    const port = process.env.PORT
+    const port = process.env.DEPLOY_PORT
     return `${host}:${port}/auth/${provider}/callback`
 }
 
