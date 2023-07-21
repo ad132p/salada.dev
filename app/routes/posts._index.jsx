@@ -10,7 +10,7 @@ export default function Posts() {
     const { posts } = useLoaderData();
     return (
         <main>
-            <h1>Posts</h1>
+            <h1 className="border-green-200 border-4">Posts</h1>
             <Link to="admin" className="text-red-600 underline">
                 Admin
             </Link>

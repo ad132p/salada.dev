@@ -11,6 +11,11 @@ import {
 import stylesheet from "~/tailwind.css";
 
 
+import { useEffect, useState } from "react";
+import io from "socket.io-client";
+
+import { SocketProvider } from "~/context";
+
 
 export const links = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -19,6 +24,18 @@ export const links = () => [
 
 
 export default function App() {
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    const socket = io('http://localhost:8080', { 
+      path: "/michael-stream/"
+    });
+    setSocket(socket);
+    return () => {
+      socket.close();
+    };
+  }, []);
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -27,9 +44,13 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-full bg-[#27272a]">
+      <body className="h-full bg-myice">
         <Navbar />
-        <Outlet />
+        <SocketProvider socket={socket}>
+          <Outlet />
+        </SocketProvider>
+
+        {/***        <Outlet /> ****/}
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
